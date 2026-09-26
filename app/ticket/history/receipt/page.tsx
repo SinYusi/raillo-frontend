@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, ArrowRight, Receipt } from "lucide-react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import type { TicketReceiptResponse } from "@/types/bookingType";
 import { useGetTicketReceipt } from "@/hooks/useBooking";
 import { formatDate, formatTime, formatPrice } from "@/lib/utils/format";
 import {
@@ -22,8 +21,6 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
 import { PageHeader } from "@/components/common/PageHeader";
-
-type TicketReceiptDetail = TicketReceiptResponse["result"];
 
 export default function TicketReceiptDetailPage() {
   const searchParams = useSearchParams();

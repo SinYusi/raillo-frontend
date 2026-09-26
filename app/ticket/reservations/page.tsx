@@ -6,17 +6,13 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  MapPin,
   Clock,
-  ArrowRight,
-  X,
   Info,
   CreditCard,
 } from "lucide-react";
-import { formatPrice, formatDate, formatTime } from "@/lib/utils/format";
+import { formatPrice } from "@/lib/utils/format";
 import { deletePendingBookings } from "@/lib/api/pendingBookings";
 import { usePendingBookingSelection } from "@/hooks/usePendingBookingSelection";
 import { useTossPayment } from "@/hooks/useTossPayment";
@@ -25,7 +21,6 @@ import {
   useGetPendingBookingList,
   PENDING_BOOKINGS_QUERY_KEY,
 } from "@/hooks/usePendingBooking";
-import type { PendingBookingCartItem } from "@/types/bookingType";
 import { handleError } from "@/lib/utils/errorHandler";
 import {
   AlertDialog,
@@ -49,7 +44,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { TossPaymentWidget } from "@/components/payment/TossPaymentWidget";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { TrainTypeBadge } from "@/components/ticket/TrainTypeBadge";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
