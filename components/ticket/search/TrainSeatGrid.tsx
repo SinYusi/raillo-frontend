@@ -49,6 +49,7 @@ export function TrainSeatGrid({
             aria-label={`${seatNumber} ${seat.seatType === "WINDOW" ? "창가" : "통로"} ${seat.seatDirection === "FORWARD" ? "순방향" : seat.seatDirection === "BACKWARD" ? "역방향" : ""}${seat.isAvailable ? "" : " 매진"}`.replace(/\s+/g, " ").trim()}
             className={`
               relative w-10 h-10 text-xs font-medium rounded border-2 transition-all duration-200 hover:scale-105
+              ${seat.seatDirection === "FORWARD" ? "pl-2" : "pr-2"}
               ${getSeatButtonStyle(seat, isSelected)}
             `}
             title={`${seatNumber} (${seat.seatType === "WINDOW" ? "창가" : "통로"}) ${seat.remarks || ""}`}
