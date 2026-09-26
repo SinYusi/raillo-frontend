@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
+import { PageHeader } from "@/components/common/PageHeader";
 
 interface Ticket {
   bookingId: number;
@@ -64,11 +65,7 @@ function PurchasedTicketsPageContent() {
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                승차권 확인
-              </h2>
-            </div>
+            <PageHeader title="승차권 확인" description="발권한 승차권의 운행·좌석 정보를 확인할 수 있습니다" />
             <CardListSkeleton label="승차권을 불러오는 중" />
           </div>
         </div>
@@ -82,11 +79,7 @@ function PurchasedTicketsPageContent() {
       <div className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Page Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              승차권 확인
-            </h2>
-          </div>
+          <PageHeader title="승차권 확인" description="발권한 승차권의 운행·좌석 정보를 확인할 수 있습니다" />
 
           {/* Content */}
           <div className="w-full">
@@ -151,10 +144,10 @@ function PurchasedTicketsPageContent() {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           {/* 운행 정보 */}
                           <div className="bg-card rounded-lg p-4 border border-border">
-                            <h4 className="font-bold text-foreground mb-3 flex items-center">
+                            <h3 className="font-bold text-foreground mb-3 flex items-center">
                               <MapPin className="h-4 w-4 mr-2 text-primary" />
                               운행 정보
-                            </h4>
+                            </h3>
                             <div className="space-y-3">
                               <div className="flex items-center justify-between">
                                 <div className="text-center flex-1">
@@ -193,10 +186,10 @@ function PurchasedTicketsPageContent() {
 
                           {/* 좌석 정보 */}
                           <div className="bg-card rounded-lg p-4 border border-border">
-                            <h4 className="font-bold text-foreground mb-3 flex items-center">
+                            <h3 className="font-bold text-foreground mb-3 flex items-center">
                               <User className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
                               좌석 정보
-                            </h4>
+                            </h3>
                             <div className="space-y-2">
                               {(() => {
                                 // 호차별로 좌석 그룹화

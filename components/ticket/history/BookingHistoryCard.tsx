@@ -122,7 +122,7 @@ export default function BookingHistoryCard({ booking }: BookingHistoryCardProps)
         </div>
 
         <div className="space-y-2">
-          <h4 className="font-semibold text-foreground">승차권 목록</h4>
+          <h3 className="font-semibold text-foreground">승차권 목록</h3>
           {booking.tickets.map((ticket) => (
             <div
               key={ticket.ticketId}
