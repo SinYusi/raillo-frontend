@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/card";
 import {
   ArrowLeftRight,
-  CalendarIcon,
-  CreditCard,
+  ArrowRight,
+  Receipt,
   Search,
+  Ticket,
   Train,
   MapPin,
   Clock,
+  UserPlus,
+  type LucideIcon,
 } from "lucide-react";
 import { StationSelector } from "@/components/ticket/search/station-selector";
 import { DateTimeSelector } from "@/components/ticket/search/date-time-selector";
@@ -26,6 +29,38 @@ import { PassengerSelector } from "@/components/ticket/search/passenger-selector
 import type { PassengerCounts } from "@/types/passengerType";
 import { useToast } from "@/hooks/useToast";
 import { saveSearchHistory } from "@/lib/utils/searchHistory";
+
+interface Shortcut {
+  href: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  iconClassName: string;
+}
+
+const SHORTCUTS: Shortcut[] = [
+  {
+    href: "/guest-ticket/search",
+    title: "비회원 승차권 확인",
+    description: "회원가입 없이 예매한 승차권을 확인하세요",
+    icon: Ticket,
+    iconClassName: "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400",
+  },
+  {
+    href: "/ticket/history",
+    title: "구입 이력·영수증",
+    description: "지난 결제와 영수증을 확인하세요",
+    icon: Receipt,
+    iconClassName: "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400",
+  },
+  {
+    href: "/signup",
+    title: "회원가입",
+    description: "예매 내역을 한곳에서 관리하세요",
+    icon: UserPlus,
+    iconClassName: "bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400",
+  },
+];
 
 export default function HomePage() {
   const router = useRouter();
@@ -36,7 +71,7 @@ export default function HomePage() {
   const [arrivalStation, setArrivalStation] = useState("");
   const [departureDate, setDepartureDate] = useState<Date>(new Date());
   const [passengers, setPassengers] = useState<PassengerCounts>({
-    adult: 0,
+    adult: 1,
     child: 0,
     infant: 0,
     senior: 0,
@@ -226,108 +261,34 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          {/* Service Grid with improved spacing and design */}
+          {/* 바로가기 — 헤더 메뉴와 겹치지 않는 화면만 */}
           <div className="mb-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground mb-4">
-                주요 서비스
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                RAILLO에서 제공하는 다양한 서비스를 이용해보세요
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground text-center mb-8">
+              바로가기
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* 승차권 확인 */}
-              <Link href="/ticket/purchased" className="rounded-card">
-                <Card className="group h-full cursor-pointer transition-all duration-200 hover:shadow-elev-md hover:-translate-y-0.5">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-3 rounded-xl bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400 transition-transform duration-200 group-hover:scale-105">
-                        <CreditCard className="h-7 w-7" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {SHORTCUTS.map(({ href, title, description, icon: Icon, iconClassName }) => (
+                <Link key={href} href={href} className="group rounded-card">
+                  <Card className="h-full transition-all duration-200 group-hover:shadow-elev-md group-hover:-translate-y-0.5">
+                    <CardHeader className="flex-row items-center gap-4 space-y-0">
+                      <div className={`shrink-0 p-3 rounded-xl ${iconClassName}`}>
+                        <Icon className="h-6 w-6" aria-hidden />
                       </div>
-                      <div>
-                        <CardTitle asChild className="text-xl text-foreground">
-                          <h3>승차권 확인</h3>
+                      <div className="min-w-0 flex-1">
+                        <CardTitle asChild className="text-lg text-foreground">
+                          <h3>{title}</h3>
                         </CardTitle>
-                        <CardDescription className="text-muted-foreground">
-                          예매한 승차권 정보를 확인하세요
-                        </CardDescription>
+                        <CardDescription className="mt-1 break-keep">{description}</CardDescription>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    {/* 카드 전체가 링크라서 버튼 모양만 쓰고 따로 포커스를 받지 않게 함 */}
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full transition-all duration-200 font-medium"
-                    >
-                      <span>확인하기</span>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              {/* 예약 승차권 조회 및 취소 */}
-              <Link href="/ticket/reservations" className="rounded-card">
-                <Card className="group h-full cursor-pointer transition-all duration-200 hover:shadow-elev-md hover:-translate-y-0.5">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-3 rounded-xl bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400 transition-transform duration-200 group-hover:scale-105">
-                        <CalendarIcon className="h-7 w-7" />
-                      </div>
-                      <div>
-                        <CardTitle asChild className="text-xl text-foreground">
-                          <h3>예약승차권 조회</h3>
-                        </CardTitle>
-                        <CardDescription className="text-muted-foreground">
-                          예약한 승차권을 조회하고 취소할 수 있습니다
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full transition-all duration-200 font-medium"
-                    >
-                      <span>조회하기</span>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              {/* 열차 조회 */}
-              <Link href="/" className="rounded-card">
-                <Card className="group h-full cursor-pointer transition-all duration-200 hover:shadow-elev-md hover:-translate-y-0.5">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="p-3 rounded-xl bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400 transition-transform duration-200 group-hover:scale-105">
-                        <Search className="h-7 w-7" />
-                      </div>
-                      <div>
-                        <CardTitle asChild className="text-xl text-foreground">
-                          <h3>승차권 예매</h3>
-                        </CardTitle>
-                        <CardDescription className="text-muted-foreground">
-                          원하는 열차를 검색하고 예매하세요
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-full transition-all duration-200 font-medium"
-                    >
-                      <span>예매하기</span>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
+                      <ArrowRight
+                        className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5"
+                        aria-hidden
+                      />
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
             </div>
           </div>
 
