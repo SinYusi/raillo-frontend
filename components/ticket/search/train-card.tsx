@@ -26,10 +26,13 @@ interface SeatOptionProps {
 function SeatOption({ label, seat, onSelect }: SeatOptionProps) {
   const canReserve = seat?.canReserve ?? false
   return (
-    <div className="rounded-lg border bg-muted p-3">
-      <div className="text-sm font-medium mb-1">{label}</div>
-      <div className={`text-lg font-bold tabular-nums mb-2 ${canReserve ? "text-foreground" : "text-muted-foreground"}`}>
-        {seat ? formatPrice(seat.fare) : "-"}
+    <div className="rounded-lg border bg-muted p-2.5 lg:p-3">
+      {/* 모바일은 등급·가격을 한 줄로(카드 높이 절약), lg 이상은 세로로 */}
+      <div className="flex items-baseline justify-between gap-2 mb-2 lg:block">
+        <div className="text-sm font-medium lg:mb-1">{label}</div>
+        <div className={`text-base lg:text-lg font-bold tabular-nums ${canReserve ? "text-foreground" : "text-muted-foreground"}`}>
+          {seat ? formatPrice(seat.fare) : "-"}
+        </div>
       </div>
       {canReserve ? (
         <Button size="sm" className="w-full" onClick={(event) => onSelect(event.currentTarget)}>
@@ -57,15 +60,17 @@ export const TrainCard = memo(function TrainCard({
         isSelected ? "border-primary ring-[3px] ring-secondary" : ""
       }`}
     >
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+      {/* 모바일: 번호·소요시간 한 줄 → 시간 → 등급 2열로 촘촘하게. 역 이름 줄은 검색 조건과 같아 lg 이상에서만 */}
+      <CardContent className="px-4 py-3.5 lg:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4 items-center">
           {/* Train Info */}
           <div className="lg:col-span-4">
-            <div className="flex items-center space-x-3 mb-2">
+            <div className="flex items-center gap-3 lg:mb-2">
               <TrainTypeBadge trainName={train.trainName} />
               <span className="font-semibold text-lg">{train.trainNumber}</span>
+              <span className="ml-auto text-sm text-muted-foreground tabular-nums lg:hidden">{train.formattedTravelTime}</span>
             </div>
-            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+            <div className="hidden lg:flex items-center space-x-4 text-sm text-muted-foreground">
               <span>{train.departureStationName}</span>
               <ArrowRight className="h-4 w-4" />
               <span>{train.arrivalStationName}</span>
@@ -74,17 +79,17 @@ export const TrainCard = memo(function TrainCard({
 
           {/* Time Info */}
           <div className="lg:col-span-3">
-            <div className="flex items-center space-x-2 mb-1 text-foreground">
-              <span className="text-2xl font-bold tracking-tight tabular-nums">{train.departureTime.substring(0, 5)}</span>
+            <div className="flex items-center space-x-2 lg:mb-1 text-foreground">
+              <span className="text-xl lg:text-2xl font-bold tracking-tight tabular-nums">{train.departureTime.substring(0, 5)}</span>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
-              <span className="text-2xl font-bold tracking-tight tabular-nums">{train.arrivalTime.substring(0, 5)}</span>
+              <span className="text-xl lg:text-2xl font-bold tracking-tight tabular-nums">{train.arrivalTime.substring(0, 5)}</span>
             </div>
-            <div className="text-sm text-muted-foreground">{train.formattedTravelTime}</div>
+            <div className="hidden lg:block text-sm text-muted-foreground">{train.formattedTravelTime}</div>
           </div>
 
           {/* Seat Options */}
           <div className="lg:col-span-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:max-w-[340px] sm:ml-auto">
+            <div className="grid grid-cols-2 gap-2 lg:max-w-[340px] lg:ml-auto">
               <SeatOption
                 label="일반실"
                 seat={train.standardSeat}

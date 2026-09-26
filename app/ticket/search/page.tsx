@@ -252,7 +252,7 @@ function TrainSearchPage() {
 
   return (
     // 로딩 스켈레톤과 같은 최소 높이 — 결과 수(빈 결과 포함)에 따라 푸터 위치가 바뀌지 않게 한다
-    <div className="container mx-auto min-h-screen px-4 py-8">
+    <div className="container mx-auto min-h-screen px-4 py-4 md:py-8">
       <div className="max-w-6xl mx-auto">
         {/* Search Form */}
         <SearchForm
@@ -270,7 +270,7 @@ function TrainSearchPage() {
         />
 
         {/* Train List */}
-        <div className="space-y-4">
+        <div className="space-y-3 lg:space-y-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-foreground">검색 결과</h2>
             <div className="text-sm text-muted-foreground">

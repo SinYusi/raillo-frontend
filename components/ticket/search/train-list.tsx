@@ -44,7 +44,7 @@ export function TrainList({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 lg:space-y-4">
       {displayedTrains.map((train) => (
         <TrainCard
           key={train.trainScheduleId}
