@@ -14,7 +14,7 @@ export function PageHeader({ title, description, className }: PageHeaderProps) {
   return (
     <div className={cn("mb-8", className)}>
       <h1 className="text-3xl font-bold text-foreground">{title}</h1>
-      {description && <p className="mt-2 text-muted-foreground">{description}</p>}
+      {description && <p className="mt-2 break-keep text-muted-foreground">{description}</p>}
     </div>
   );
 }
