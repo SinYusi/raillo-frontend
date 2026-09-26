@@ -157,26 +157,18 @@ export function SeatSelectionDialog({
   const seatGrid = generateSeatGrid();
   const filteredCars = getFilteredCars();
 
-  // 좌석 버튼 스타일링 함수
+  // 좌석 채움은 상태 전용 — 방향은 좌석 안 등받이 막대(TrainSeatGrid)로 표시한다
   const getSeatButtonStyle = (
     seat: SeatDetail & { isWindow: boolean },
     isSelected: boolean,
   ): string => {
     if (!seat.isAvailable) {
-      return "bg-gray-400 border-gray-500 text-gray-600 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-400 cursor-not-allowed";
+      return "seat-hatch bg-muted border-border text-muted-foreground cursor-not-allowed";
     }
-
     if (isSelected) {
       return "bg-primary text-primary-foreground border-primary-active shadow-lg";
     }
-
-    // 방향에 따른 기본 색상
-    if (seat.seatDirection === "FORWARD") {
-      return "bg-orange-100 border-orange-300 hover:bg-orange-200 text-foreground dark:bg-orange-500/15 dark:border-orange-400/40 dark:hover:bg-orange-500/25";
-    } else if (seat.seatDirection === "BACKWARD") {
-      return "bg-purple-100 border-purple-300 hover:bg-purple-200 text-foreground dark:bg-purple-500/15 dark:border-purple-400/40 dark:hover:bg-purple-500/25";
-    }
-    return "bg-blue-100 border-blue-300 hover:bg-blue-200 text-foreground dark:bg-blue-500/15 dark:border-blue-400/40 dark:hover:bg-blue-500/25";
+    return "bg-card border-input text-foreground hover:bg-muted";
   };
 
   const handleSeatSelectionClick = (
@@ -275,32 +267,38 @@ export function SeatSelectionDialog({
           </div>
         </div>
 
-        {/* Seat Legend */}
+        {/* Seat Legend — 상태(채움)와 방향(등받이 막대)을 따로 묶는다 */}
         <div className="p-4 border-b bg-card">
-          <div className="flex items-center justify-center space-x-8 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 bg-blue-100 border border-blue-300 dark:bg-blue-500/15 dark:border-blue-400/40 rounded"></div>
-              <span className="text-foreground">선택 가능</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 bg-primary border border-primary-active rounded"></div>
-              <span className="text-foreground">선택됨</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 bg-gray-400 border border-gray-500 dark:bg-zinc-700 dark:border-zinc-600 rounded"></div>
-              <span className="text-foreground">매진</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 border bg-orange-100 border-orange-300 dark:bg-orange-500/15 dark:border-orange-400/40 rounded flex items-center justify-center">
-                <span className="text-xs text-orange-700 dark:text-orange-300">→</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+            <div className="flex items-center gap-5" aria-label="좌석 상태">
+              <div className="flex items-center space-x-2">
+                <div className="w-5 h-5 rounded border-2 bg-card border-input" aria-hidden="true"></div>
+                <span className="text-foreground">선택 가능</span>
               </div>
-              <span className="text-foreground">순방향</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 border bg-purple-100 border-purple-300 dark:bg-purple-500/15 dark:border-purple-400/40 rounded flex items-center justify-center">
-                <span className="text-xs text-purple-600 dark:text-purple-300">←</span>
+              <div className="flex items-center space-x-2">
+                <div className="w-5 h-5 rounded border-2 bg-primary border-primary-active" aria-hidden="true"></div>
+                <span className="text-foreground">선택됨</span>
               </div>
-              <span className="text-foreground">역방향</span>
+              <div className="flex items-center space-x-2">
+                <div className="w-5 h-5 rounded border-2 seat-hatch bg-muted border-border" aria-hidden="true"></div>
+                <span className="text-foreground">매진</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-5 sm:border-l sm:pl-8" aria-label="좌석 방향">
+              <div className="flex items-center space-x-2">
+                <div className="relative w-5 h-5 rounded border-2 bg-card border-input" aria-hidden="true">
+                  <span className="absolute inset-y-0.5 left-0.5 w-[3px] rounded-full bg-muted-foreground"></span>
+                </div>
+                <span className="text-foreground">
+                  순방향 <span className="text-muted-foreground">(등받이가 진행 반대쪽)</span>
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="relative w-5 h-5 rounded border-2 bg-card border-input" aria-hidden="true">
+                  <span className="absolute inset-y-0.5 right-0.5 w-[3px] rounded-full bg-muted-foreground"></span>
+                </div>
+                <span className="text-foreground">역방향</span>
+              </div>
             </div>
           </div>
         </div>
@@ -315,6 +313,11 @@ export function SeatSelectionDialog({
               </div>
             </div>
           ) : seatGrid.length > 0 ? (
+            <>
+            {/* 배치도는 최소 폭이 있어 좁은 화면에서는 가로로 스크롤된다 */}
+            <p className="mb-3 text-xs text-muted-foreground lg:hidden">
+              배치도가 화면보다 넓으면 좌우로 밀어서 볼 수 있습니다
+            </p>
             <TrainSeatGrid
               seatGrid={seatGrid}
               selectedSeats={selectedSeats}
@@ -324,6 +327,7 @@ export function SeatSelectionDialog({
               onSeatSelectionClick={handleSeatSelectionClick}
               getSeatButtonStyle={getSeatButtonStyle}
             />
+            </>
           ) : (
             <div className="flex items-center justify-center h-64">
               <div className="text-center">
