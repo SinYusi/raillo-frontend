@@ -162,7 +162,7 @@ export default function HomePage() {
               안전하고 편리한
               <span className="block text-primary">철도여행</span>
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed break-keep">
               RAILLO와 함께하는 스마트한 기차여행을 시작하세요
             </p>
           </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
             <CardContent className="p-8">
               <div className="text-center mb-6">
                 <h2 className="text-2xl font-bold tracking-tight mb-2">열차 예매</h2>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground break-keep">
                   원하는 조건으로 열차를 검색하고 예매하세요
                 </p>
               </div>
@@ -294,18 +294,18 @@ export default function HomePage() {
 
           {/* Additional Features Section */}
           <div className="text-center">
-            <div className="inline-flex items-center space-x-8 text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <Clock className="h-5 w-5" />
-                <span className="text-sm">24시간 운영</span>
+                <span className="text-sm whitespace-nowrap">24시간 운영</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-5 w-5" />
-                <span className="text-sm">전국 역 연결</span>
+                <span className="text-sm whitespace-nowrap">전국 역 연결</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Train className="h-5 w-5" />
-                <span className="text-sm">안전한 여행</span>
+                <span className="text-sm whitespace-nowrap">안전한 여행</span>
               </div>
             </div>
           </div>
