@@ -8,6 +8,14 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* 매진 좌석 빗금 — 색 대신 무늬로도 상태를 구분(흑백·색각 차이에도 읽힘) */
+  .seat-hatch {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 5px,
+      rgb(var(--muted-foreground) / 0.28) 5px 6px
+    );
+  }
 }
 
 @layer base {

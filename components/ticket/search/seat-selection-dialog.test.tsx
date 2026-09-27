@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react"
+import { act, render, screen, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import type { CarInfo, SeatDetail, SeatInfo, TrainSchedule } from "@/types/trainType"
 import { SeatSelectionDialog } from "./seat-selection-dialog"
@@ -180,5 +180,17 @@ describe("SeatSelectionDialog 적용된 호차 복원", () => {
     expect(screen.getByText(/3호차 \(일반실\)/)).toBeInTheDocument()
     act(() => screen.getByRole("button", { name: /선택적용/ }).click())
     expect(onApply).toHaveBeenCalledWith(["1A"], 3)
+  })
+})
+
+describe("SeatSelectionDialog 범례", () => {
+  it("상태와 방향 범례를 이름 있는 그룹으로 전달한다", () => {
+    renderDialog()
+
+    const status = screen.getByRole("group", { name: "좌석 상태" })
+    expect(within(status).getByText("선택 가능")).toBeInTheDocument()
+    expect(within(status).getByText("매진")).toBeInTheDocument()
+    const direction = screen.getByRole("group", { name: "좌석 방향" })
+    expect(within(direction).getByText("역방향")).toBeInTheDocument()
   })
 })

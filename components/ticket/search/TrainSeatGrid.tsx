@@ -48,11 +48,19 @@ export function TrainSeatGrid({
             aria-pressed={isSelected}
             aria-label={`${seatNumber} ${seat.seatType === "WINDOW" ? "창가" : "통로"} ${seat.seatDirection === "FORWARD" ? "순방향" : seat.seatDirection === "BACKWARD" ? "역방향" : ""}${seat.isAvailable ? "" : " 매진"}`.replace(/\s+/g, " ").trim()}
             className={`
-              w-10 h-10 text-xs font-medium rounded border-2 transition-all duration-200 hover:scale-105
+              relative w-10 h-10 text-xs font-medium rounded border-2 transition-all duration-200 hover:scale-105
+              ${seat.seatDirection === "FORWARD" ? "pl-2" : "pr-2"}
               ${getSeatButtonStyle(seat, isSelected)}
             `}
             title={`${seatNumber} (${seat.seatType === "WINDOW" ? "창가" : "통로"}) ${seat.remarks || ""}`}
           >
+            {/* 등받이 막대 — 진행 방향(→)을 보고 앉는 순방향은 왼쪽, 역방향은 오른쪽. 방향은 aria-label에도 있음 */}
+            <span
+              aria-hidden="true"
+              className={`absolute inset-y-1.5 w-1 rounded-full ${seat.seatDirection === "FORWARD" ? "left-1" : "right-1"} ${
+                isSelected ? "bg-primary-foreground/90" : seat.isAvailable ? "bg-muted-foreground" : "bg-muted-foreground/40"
+              }`}
+            ></span>
             {seatNumber}
           </button>
         )
@@ -62,22 +70,20 @@ export function TrainSeatGrid({
 
   const renderAisle = () => (
     <div className="flex justify-between items-center px-2 py-1">
-      <span className="font-semibold text-blue-700 dark:text-blue-300 text-sm">
+      <span className="font-semibold text-primary text-sm">
         {selectedTrain.departureStationName || "출발역"}
       </span>
-      <div className="flex items-center space-x-1">
-        {Array.from({ length: 6 }, (_, i) => (
-          <span key={i} className="text-blue-600 dark:text-blue-400 text-lg font-bold">→</span>
-        ))}
-      </div>
-      <span className="font-semibold text-blue-700 dark:text-blue-300 text-sm">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-secondary px-3 py-0.5 text-xs font-semibold text-secondary-foreground">
+        진행 방향 <span aria-hidden="true">→</span>
+      </span>
+      <span className="font-semibold text-primary text-sm">
         {selectedTrain.arrivalStationName || "도착역"}
       </span>
     </div>
   )
 
   return (
-    <div className="border-2 border-blue-200 dark:border-blue-500/30 rounded-lg p-6 bg-blue-50 dark:bg-blue-500/10 min-w-[800px]">
+    <div className="border rounded-lg p-6 bg-card min-w-[800px]">
       <div className="flex items-center justify-center">
         <div className="flex items-center space-x-6">
           {/* Left Restrooms */}
