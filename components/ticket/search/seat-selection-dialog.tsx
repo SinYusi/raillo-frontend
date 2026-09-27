@@ -270,7 +270,7 @@ export function SeatSelectionDialog({
         {/* Seat Legend — 상태(채움)와 방향(등받이 막대)을 따로 묶는다 */}
         <div className="p-4 border-b bg-card">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
-            <div className="flex items-center gap-5" aria-label="좌석 상태">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2" aria-label="좌석 상태">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 rounded border-2 bg-card border-input" aria-hidden="true"></div>
                 <span className="text-foreground">선택 가능</span>
@@ -284,7 +284,7 @@ export function SeatSelectionDialog({
                 <span className="text-foreground">매진</span>
               </div>
             </div>
-            <div className="flex items-center gap-5 sm:border-l sm:pl-8" aria-label="좌석 방향">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:border-l sm:pl-8" aria-label="좌석 방향">
               <div className="flex items-center space-x-2">
                 <div className="relative w-5 h-5 rounded border-2 bg-card border-input" aria-hidden="true">
                   <span className="absolute inset-y-0.5 left-0.5 w-[3px] rounded-full bg-muted-foreground"></span>
