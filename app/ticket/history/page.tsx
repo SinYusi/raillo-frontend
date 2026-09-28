@@ -13,6 +13,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
+import { PageHeader } from "@/components/common/PageHeader";
 
 type BookingHistoryItem = TicketResponse["result"][number];
 type HistoryTab = "all" | "issued" | "cancelled";
@@ -67,12 +68,7 @@ export default function PaymentHistoryPage() {
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">예매 내역</h2>
-            <p className="text-muted-foreground">
-              예매번호와 영수증 상세를 확인할 수 있습니다
-            </p>
-          </div>
+          <PageHeader title="예매 내역" description="예매번호와 영수증 상세를 확인할 수 있습니다" />
             <CardListSkeleton label="예매 내역을 불러오는 중" />
           </div>
         </div>
@@ -84,12 +80,7 @@ export default function PaymentHistoryPage() {
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">예매 내역</h2>
-            <p className="text-muted-foreground">
-              예매번호와 영수증 상세를 확인할 수 있습니다
-            </p>
-          </div>
+          <PageHeader title="예매 내역" description="예매번호와 영수증 상세를 확인할 수 있습니다" />
 
           <div className="mb-6">
             <Tabs
@@ -114,12 +105,14 @@ export default function PaymentHistoryPage() {
           <div className="space-y-6">
             {isError ? (
               <ErrorState
+                headingLevel={2}
                 title="예매 내역을 불러오지 못했습니다"
                 description={error?.message ?? "일시적인 오류로 조회하지 못했습니다. 잠시 후 다시 시도해주세요."}
                 action={<Button onClick={() => refetch()}>다시 시도</Button>}
               />
             ) : filteredBookings.length === 0 ? (
               <EmptyState
+                headingLevel={2}
                 icon={Receipt}
                 title={
                   { all: "예매 내역이 없습니다", issued: "발권 완료된 내역이 없습니다", cancelled: "취소/환불 내역이 없습니다" }[activeTab]

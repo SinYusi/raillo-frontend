@@ -70,10 +70,10 @@ export function ReservationCard({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <h4 className="font-medium text-foreground mb-2 flex items-center">
+                <h3 className="font-medium text-foreground mb-2 flex items-center">
                   <MapPin className="h-4 w-4 mr-1" />
                   운행 정보
-                </h4>
+                </h3>
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2">
                     <span className="font-medium">
@@ -92,19 +92,19 @@ export function ReservationCard({
               </div>
 
               <div>
-                <h4 className="font-medium text-foreground mb-2">
+                <h3 className="font-medium text-foreground mb-2">
                   좌석 정보
-                </h4>
+                </h3>
                 <div className="text-sm font-medium">
                   {seatSummaryOf(reservation.seats)}
                 </div>
               </div>
 
               <div>
-                <h4 className="font-medium text-foreground mb-2 flex items-center">
+                <h3 className="font-medium text-foreground mb-2 flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
                   결제 기한
-                </h4>
+                </h3>
                 <div className="text-sm font-medium">
                   {reservation.expiresAt
                     ? `${formatDateTime(reservation.expiresAt)}까지`

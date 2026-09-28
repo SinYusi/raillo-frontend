@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, ArrowRight, Receipt } from "lucide-react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import type { TicketReceiptResponse } from "@/types/bookingType";
 import { useGetTicketReceipt } from "@/hooks/useBooking";
 import { formatDate, formatTime, formatPrice } from "@/lib/utils/format";
 import {
@@ -21,8 +20,7 @@ import {
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
-
-type TicketReceiptDetail = TicketReceiptResponse["result"];
+import { PageHeader } from "@/components/common/PageHeader";
 
 export default function TicketReceiptDetailPage() {
   const searchParams = useSearchParams();
@@ -62,16 +60,13 @@ export default function TicketReceiptDetailPage() {
     return (
       <div className="min-h-screen">
         <div className="container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                영수증 상세
-              </h2>
-            </div>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <PageHeader title="영수증 상세" description="승차권 영수증 정보를 확인할 수 있습니다" className="mb-0" />
             {loading ? (
               <CardListSkeleton label="영수증 상세를 불러오는 중" count={2} />
             ) : (
               <ErrorState
+                headingLevel={2}
                 title="영수증 정보를 불러올 수 없습니다"
                 description={error?.message ?? "데이터가 없습니다."}
                 action={
@@ -90,23 +85,16 @@ export default function TicketReceiptDetailPage() {
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              영수증 상세
-            </h2>
-            <p className="text-muted-foreground">
-              승차권 영수증 정보를 확인할 수 있습니다
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto space-y-6">
+          <PageHeader title="영수증 상세" description="승차권 영수증 정보를 확인할 수 있습니다" className="mb-0" />
 
           <Card>
             <CardHeader>
               <CardTitle asChild className="flex items-center gap-2">
-                <h3>
+                <h2>
                   <Receipt className="h-5 w-5 text-primary" />
                   <span>승차권 정보</span>
-                </h3>
+                </h2>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -139,10 +127,10 @@ export default function TicketReceiptDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle asChild className="flex items-center gap-2">
-                <h3>
+                <h2>
                   <MapPin className="h-5 w-5 text-primary" />
                   <span>운행 정보</span>
-                </h3>
+                </h2>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -174,10 +162,10 @@ export default function TicketReceiptDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle asChild className="flex items-center gap-2">
-                <h3>
+                <h2>
                   <Calendar className="h-5 w-5 text-primary" />
                   <span>결제 정보</span>
-                </h3>
+                </h2>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">

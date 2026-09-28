@@ -6,18 +6,13 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  MapPin,
   Clock,
-  ArrowRight,
-  X,
-  AlertTriangle,
   Info,
   CreditCard,
 } from "lucide-react";
-import { formatPrice, formatDate, formatTime } from "@/lib/utils/format";
+import { formatPrice } from "@/lib/utils/format";
 import { deletePendingBookings } from "@/lib/api/pendingBookings";
 import { usePendingBookingSelection } from "@/hooks/usePendingBookingSelection";
 import { useTossPayment } from "@/hooks/useTossPayment";
@@ -26,7 +21,6 @@ import {
   useGetPendingBookingList,
   PENDING_BOOKINGS_QUERY_KEY,
 } from "@/hooks/usePendingBooking";
-import type { PendingBookingCartItem } from "@/types/bookingType";
 import { handleError } from "@/lib/utils/errorHandler";
 import {
   AlertDialog,
@@ -50,10 +44,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { TossPaymentWidget } from "@/components/payment/TossPaymentWidget";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { TrainTypeBadge } from "@/components/ticket/TrainTypeBadge";
 import { EmptyState } from "@/components/common/EmptyState";
 import { ErrorState } from "@/components/common/ErrorState";
 import { CardListSkeleton } from "@/components/common/CardListSkeleton";
+import { PageHeader } from "@/components/common/PageHeader";
 
 function ReservationsPageContent() {
   const router = useRouter();
@@ -122,18 +116,12 @@ function ReservationsPageContent() {
       <div className="min-h-screen pb-24">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">
-                예약승차권 조회
-              </h2>
-              <p className="text-muted-foreground">
-                예약한 승차권을 확인하고 결제하거나 취소할 수 있습니다
-              </p>
-            </div>
+            <PageHeader title="예약승차권 조회" description="예약한 승차권을 확인하고 결제하거나 취소할 수 있습니다" />
             {isLoading ? (
               <CardListSkeleton label="예약 목록을 불러오는 중" />
             ) : (
               <ErrorState
+                headingLevel={2}
                 title="예약 목록을 불러올 수 없습니다"
                 description={error?.message ?? "일시적인 오류로 조회하지 못했습니다. 잠시 후 다시 시도해주세요."}
                 action={
@@ -157,27 +145,30 @@ function ReservationsPageContent() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Page Title */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">
-              예약승차권 조회
-            </h2>
-            <p className="text-muted-foreground">
-              예약한 승차권을 확인하고 결제하거나 취소할 수 있습니다
-            </p>
-          </div>
+          <PageHeader title="예약승차권 조회" description="예약한 승차권을 확인하고 결제하거나 취소할 수 있습니다" />
 
-          {/* Notice */}
+          {/* Notice — 예약 관련 안내를 목록 위 한 곳에 모은다 */}
           <Alert variant="info" role="note" className="mb-8">
             <Info className="h-4 w-4" />
-            <AlertDescription className="font-medium">
-              결제 기한이 지난 목록은 자동 삭제됩니다
+            <AlertTitle asChild>
+              <h2 className="mb-2 font-semibold">결제 전 확인하세요</h2>
+            </AlertTitle>
+            <AlertDescription>
+              <ul className="space-y-1 list-disc list-inside">
+                <li>
+                  예약 후 10분 이내에 결제하지 않으면 자동으로 취소됩니다.
+                </li>
+                <li>결제 기한이 지난 예약은 자동으로 삭제됩니다.</li>
+                <li>예약 취소는 결제 기한 내에만 가능합니다.</li>
+                <li>예약번호는 예약 완료 시 발급된 번호입니다.</li>
+              </ul>
             </AlertDescription>
           </Alert>
 
           {/* Reservation List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-foreground">예약 내역</h3>
+              <h2 className="text-xl font-bold text-foreground">예약 내역</h2>
               {validReservations.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -231,23 +222,6 @@ function ReservationsPageContent() {
             )}
           </div>
 
-          {/* Notice */}
-          <Alert variant="warning" role="note" className="mt-8">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle asChild>
-              <h3 className="mb-2 font-semibold">예약승차권 조회 안내</h3>
-            </AlertTitle>
-            <AlertDescription>
-              <ul className="space-y-1 list-disc list-inside">
-                <li>
-                  예약 후 10분 이내에 결제하지 않으면 자동으로 취소됩니다.
-                </li>
-                <li>결제 기한이 지난 예약은 자동으로 삭제됩니다.</li>
-                <li>예약 취소는 결제 기한 내에만 가능합니다.</li>
-                <li>예약번호는 예약 완료 시 발급된 번호입니다.</li>
-              </ul>
-            </AlertDescription>
-          </Alert>
         </div>
       </div>
 
