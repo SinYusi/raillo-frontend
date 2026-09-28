@@ -105,12 +105,14 @@ export default function PaymentHistoryPage() {
           <div className="space-y-6">
             {isError ? (
               <ErrorState
+                headingLevel={2}
                 title="예매 내역을 불러오지 못했습니다"
                 description={error?.message ?? "일시적인 오류로 조회하지 못했습니다. 잠시 후 다시 시도해주세요."}
                 action={<Button onClick={() => refetch()}>다시 시도</Button>}
               />
             ) : filteredBookings.length === 0 ? (
               <EmptyState
+                headingLevel={2}
                 icon={Receipt}
                 title={
                   { all: "예매 내역이 없습니다", issued: "발권 완료된 내역이 없습니다", cancelled: "취소/환불 내역이 없습니다" }[activeTab]

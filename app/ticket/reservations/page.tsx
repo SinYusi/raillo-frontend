@@ -121,6 +121,7 @@ function ReservationsPageContent() {
               <CardListSkeleton label="예약 목록을 불러오는 중" />
             ) : (
               <ErrorState
+                headingLevel={2}
                 title="예약 목록을 불러올 수 없습니다"
                 description={error?.message ?? "일시적인 오류로 조회하지 못했습니다. 잠시 후 다시 시도해주세요."}
                 action={

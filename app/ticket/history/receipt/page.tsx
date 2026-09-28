@@ -66,6 +66,7 @@ export default function TicketReceiptDetailPage() {
               <CardListSkeleton label="영수증 상세를 불러오는 중" count={2} />
             ) : (
               <ErrorState
+                headingLevel={2}
                 title="영수증 정보를 불러올 수 없습니다"
                 description={error?.message ?? "데이터가 없습니다."}
                 action={
