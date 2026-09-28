@@ -35,7 +35,6 @@ interface Shortcut {
   title: string;
   description: string;
   icon: LucideIcon;
-  iconClassName: string;
 }
 
 const SHORTCUTS: Shortcut[] = [
@@ -44,21 +43,18 @@ const SHORTCUTS: Shortcut[] = [
     title: "비회원 승차권 확인",
     description: "회원가입 없이 예매한 승차권을 확인하세요",
     icon: Ticket,
-    iconClassName: "bg-green-100 text-green-700 dark:bg-green-500/15 dark:text-green-400",
   },
   {
     href: "/ticket/history",
     title: "구입 이력·영수증",
     description: "지난 결제와 영수증을 확인하세요",
     icon: Receipt,
-    iconClassName: "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400",
   },
   {
     href: "/signup",
     title: "회원가입",
     description: "예매 내역을 한곳에서 관리하세요",
     icon: UserPlus,
-    iconClassName: "bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400",
   },
 ];
 
@@ -268,11 +264,12 @@ export default function HomePage() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {SHORTCUTS.map(({ href, title, description, icon: Icon, iconClassName }) => (
+              {SHORTCUTS.map(({ href, title, description, icon: Icon }) => (
                 <Link key={href} href={href} className="group rounded-card">
                   <Card className="h-full transition-all duration-200 group-hover:shadow-elev-md group-hover:-translate-y-0.5">
                     <CardHeader className="flex-row items-center gap-4 space-y-0">
-                      <div className={`shrink-0 p-3 rounded-xl ${iconClassName}`}>
+                      {/* 아이콘은 장식 — 파랑·도메인 색을 쓰지 않고 중립 타일로(빈 목록 아이콘 타일과 같은 규칙) */}
+                      <div className="shrink-0 rounded-xl border bg-muted p-3 text-foreground">
                         <Icon className="h-6 w-6" aria-hidden />
                       </div>
                       <div className="min-w-0 flex-1">
