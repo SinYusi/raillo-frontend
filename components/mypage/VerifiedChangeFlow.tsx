@@ -2,7 +2,7 @@
 
 import { useRef, useState, type ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import MyPageSidebar from "@/components/layout/MyPageSidebar";
+import MyPageShell from "@/components/layout/MyPageShell";
 import { EmailVerificationStep } from "@/components/mypage/EmailVerificationStep";
 import { VERIFICATION_TTL_MS } from "@/constants/validation";
 import { useGetMemberInfo } from "@/hooks/useUser";
@@ -54,61 +54,50 @@ export function VerifiedChangeFlow({
   const remainingSeconds = Math.ceil(remainingMs / 1000);
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <MyPageSidebar
-            memberInfo={memberInfo || undefined}
-            isLoading={isLoading}
-          />
-
-          <div className="flex-1">
-            <Card>
-              <CardContent className="p-8">
-                <div className="mb-8">
-                  <h1
-                    ref={headingRef}
-                    tabIndex={-1}
-                    className="text-2xl font-bold text-foreground mb-3 outline-none"
-                  >
-                    {title}
-                  </h1>
-                  <div className="flex items-center justify-between gap-4 text-sm">
-                    <ol className="flex items-center gap-2 text-muted-foreground">
-                      <li aria-current={verified ? undefined : "step"} className={verified ? "" : "font-semibold text-foreground"}>
-                        1 이메일 인증
-                      </li>
-                      <li aria-hidden="true">·</li>
-                      <li aria-current={verified ? "step" : undefined} className={verified ? "font-semibold text-foreground" : ""}>
-                        2 {changeStepLabel}
-                      </li>
-                    </ol>
-                    {verified && (
-                      // 시계는 조용히 표시하고, 1분 남았을 때만 알린다
-                      <p className="text-muted-foreground tabular-nums">
-                        인증 유효 시간 <span aria-hidden="true">{formatRemaining(remainingMs)}</span>
-                        <span className="sr-only" aria-live="polite">
-                          {remainingSeconds > 0 && remainingSeconds <= ANNOUNCE_UNDER_SECONDS
-                            ? "인증 유효 시간이 1분 남았습니다."
-                            : ""}
-                        </span>
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {verified ? (
-                  children
-                ) : (
-                  <EmailVerificationStep
-                    onVerified={() => setExpiresAt(Date.now() + VERIFICATION_TTL_MS)}
-                  />
-                )}
-              </CardContent>
-            </Card>
+    <MyPageShell memberInfo={memberInfo || undefined} isLoading={isLoading}>
+      <Card>
+        <CardContent className="p-8">
+          <div className="mb-8">
+            <h1
+              ref={headingRef}
+              tabIndex={-1}
+              className="text-2xl font-bold text-foreground mb-3 outline-none"
+            >
+              {title}
+            </h1>
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <ol className="flex items-center gap-2 text-muted-foreground">
+                <li aria-current={verified ? undefined : "step"} className={verified ? "" : "font-semibold text-foreground"}>
+                  1 이메일 인증
+                </li>
+                <li aria-hidden="true">·</li>
+                <li aria-current={verified ? "step" : undefined} className={verified ? "font-semibold text-foreground" : ""}>
+                  2 {changeStepLabel}
+                </li>
+              </ol>
+              {verified && (
+                // 시계는 조용히 표시하고, 1분 남았을 때만 알린다
+                <p className="text-muted-foreground tabular-nums">
+                  인증 유효 시간 <span aria-hidden="true">{formatRemaining(remainingMs)}</span>
+                  <span className="sr-only" aria-live="polite">
+                    {remainingSeconds > 0 && remainingSeconds <= ANNOUNCE_UNDER_SECONDS
+                      ? "인증 유효 시간이 1분 남았습니다."
+                      : ""}
+                  </span>
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+
+          {verified ? (
+            children
+          ) : (
+            <EmailVerificationStep
+              onVerified={() => setExpiresAt(Date.now() + VERIFICATION_TTL_MS)}
+            />
+          )}
+        </CardContent>
+      </Card>
+    </MyPageShell>
   );
 }

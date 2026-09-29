@@ -15,7 +15,7 @@ vi.mock("@/hooks/useToast", () => ({ useToast: () => ({ toast }) }))
 
 // 회원 정보 조회·사이드바는 이 흐름과 무관
 vi.mock("@/hooks/useUser", () => ({ useGetMemberInfo: () => ({ data: null, isLoading: false }) }))
-vi.mock("@/components/layout/MyPageSidebar", () => ({ default: () => null }))
+vi.mock("@/components/layout/MyPageShell", () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }))
 
 const sendMock = vi.mocked(sendMemberEmailVerification)
 const verifyMock = vi.mocked(verifyMemberEmail)

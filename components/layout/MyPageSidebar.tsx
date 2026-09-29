@@ -9,19 +9,56 @@ import {
   ChevronDown,
   Settings,
   Ticket,
-  Train,
   User,
 } from "lucide-react"
 
-interface MyPageSidebarProps {
-  memberInfo?: {
-    name: string
-  }
-  /** 회원 정보를 불러오는 중이면 이름 자리에 스켈레톤을 보여 줌 */
-  isLoading?: boolean
+export interface MyPageMemberSummary {
+  name: string
+  memberId?: string
 }
 
-export default function MyPageSidebar({ memberInfo, isLoading = false }: MyPageSidebarProps) {
+interface MyPageSummaryProps {
+  memberInfo?: MyPageMemberSummary
+  /** 회원 정보를 불러오는 중이면 이름 자리에 스켈레톤을 보여 줌 */
+  isLoading?: boolean
+  className?: string
+}
+
+/** 마이페이지 회원 요약 — 이름·회원번호 */
+export function MyPageSummary({ memberInfo, isLoading = false, className }: MyPageSummaryProps) {
+  // 이름을 못 받았을 때(조회 실패 등) "회원 회원님"이 되지 않게 이름 없이 표시
+  const greeting = memberInfo?.name ? `${memberInfo.name} 회원님` : "회원님"
+
+  return (
+    <Card className={className}>
+      <CardContent className="flex items-center gap-3 p-5">
+        <div
+          aria-hidden="true"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-secondary text-lg font-bold text-secondary-foreground"
+        >
+          {memberInfo?.name && !isLoading ? memberInfo.name.charAt(0) : <User className="h-5 w-5" />}
+        </div>
+        {isLoading ? (
+          <div role="status" className="space-y-2">
+            <span className="sr-only">회원 정보를 불러오는 중</span>
+            <Skeleton className="h-5 w-28" />
+            <Skeleton className="h-4 w-36" />
+          </div>
+        ) : (
+          <div className="min-w-0">
+            <p className="text-lg font-bold text-foreground">{greeting}</p>
+            {memberInfo?.memberId && (
+              <p className="text-sm text-muted-foreground tabular-nums">회원번호 {memberInfo.memberId}</p>
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+/** 마이페이지 메뉴 — 승차권 정보·회원정보관리는 펼쳐서 고른다 */
+export function MyPageNav({ className }: { className?: string }) {
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({
     ticketInfo: false,
     memberInfoManagement: false,
@@ -34,40 +71,15 @@ export default function MyPageSidebar({ memberInfo, isLoading = false }: MyPageS
     }))
   }
 
-  // 이름을 못 받았을 때(조회 실패 등) "회원 회원님"이 되지 않게 이름 없이 표시
-  const greeting = memberInfo?.name ? `${memberInfo.name} 회원님` : "회원님"
-
   return (
-    <div className="lg:w-80">
-      {/* Profile Header */}
-      <Card className="mb-6 bg-primary text-primary-foreground">
-        <CardContent className="p-6 text-center">
-          <div className="mb-4">
-            <Train className="h-16 w-16 mx-auto mb-2 text-primary-foreground" />
-            <h2 className="text-xl font-bold">마이페이지</h2>
-            <p className="text-primary-foreground">마이페이지</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* User Info Card */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          {isLoading ? (
-            <div role="status">
-              <span className="sr-only">회원 정보를 불러오는 중</span>
-              <Skeleton className="h-7 w-32" />
-            </div>
-          ) : (
-            <h3 className="font-bold text-lg">{greeting}</h3>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Navigation Menu */}
+    <div className={className}>
+      {/* 모바일에서는 본문 아래에 오므로 제목을 보이고, 데스크톱 왼쪽 열에서는 숨긴다 */}
+      <h2 id="mypage-menu-heading" className="mb-3 text-lg font-bold text-foreground lg:sr-only">
+        마이페이지 메뉴
+      </h2>
       <Card>
         <CardContent className="p-0">
-          <nav className="space-y-1">
+          <nav aria-labelledby="mypage-menu-heading" className="space-y-1">
             {/* 마이페이지 */}
             <Link
               href="/mypage"

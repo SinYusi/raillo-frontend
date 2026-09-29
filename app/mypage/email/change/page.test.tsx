@@ -13,7 +13,7 @@ vi.mock("@/lib/api/authentication", () => ({
 }))
 vi.mock("@/lib/api/authMembers", () => ({ sendEmailVerificationCode: vi.fn(), updateEmail: vi.fn() }))
 vi.mock("@/hooks/useUser", () => ({ useGetMemberInfo: () => ({ data: null, isLoading: false }) }))
-vi.mock("@/components/layout/MyPageSidebar", () => ({ default: () => null }))
+vi.mock("@/components/layout/MyPageShell", () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }))
 vi.mock("@/components/auth/AuthGuard", () => ({ default: ({ children }: { children: ReactNode }) => <>{children}</> }))
 
 const sendMock = vi.mocked(sendMemberEmailVerification)
