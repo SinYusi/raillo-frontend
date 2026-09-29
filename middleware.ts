@@ -6,6 +6,8 @@ export function middleware(request: NextRequest) {
 
   if (!hasSession) {
     const loginUrl = new URL("/login", request.url);
+    // 로그인 뒤 원래 가려던 화면으로 돌아오도록 경로(쿼리 포함)를 넘긴다
+    loginUrl.searchParams.set("redirectTo", request.nextUrl.pathname + request.nextUrl.search);
     return NextResponse.redirect(loginUrl);
   }
 

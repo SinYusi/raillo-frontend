@@ -1,6 +1,8 @@
 import { StrictMode } from "react"
-import { render, screen } from "@testing-library/react"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { render, screen, waitFor } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { login } from "@/lib/api/authentication"
 import { LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from "@/constants/storageKeys"
 import LoginField from "./LoginField"
 
@@ -55,5 +57,41 @@ describe("로그인 회원번호 자동 입력", () => {
     renderLogin()
 
     expect(memberNumberInput().value).toBe("")
+  })
+})
+
+describe("로그인 성공 후 이동", () => {
+  const originalLocation = window.location
+  const navigation = { href: "", search: "" }
+
+  beforeEach(() => {
+    navigation.href = ""
+    vi.mocked(login).mockResolvedValue({ accessToken: "token", accessTokenExpiresIn: 3600 } as Awaited<ReturnType<typeof login>>)
+    // jsdom은 주소 이동을 하지 않으므로 이동할 주소만 기록한다
+    Object.defineProperty(window, "location", { configurable: true, value: navigation })
+  })
+
+  afterEach(() => {
+    Object.defineProperty(window, "location", { configurable: true, value: originalLocation })
+  })
+
+  const submit = async () => {
+    const user = userEvent.setup()
+    renderLogin()
+    await user.type(memberNumberInput(), "M20260926001")
+    await user.type(screen.getByLabelText(/^비밀번호/, { selector: "input" }), "password1!")
+    await user.click(screen.getByRole("button", { name: "로그인" }))
+  }
+
+  it("로그인이 필요해 넘어왔으면 원래 가려던 화면으로 간다", async () => {
+    navigation.search = "?redirectTo=%2Fticket%2Fhistory"
+    await submit()
+    await waitFor(() => expect(navigation.href).toBe("/ticket/history"))
+  })
+
+  it("돌아갈 경로가 없거나 외부 주소면 홈으로 간다", async () => {
+    navigation.search = "?redirectTo=%2F%2Fevil.example"
+    await submit()
+    await waitFor(() => expect(navigation.href).toBe("/"))
   })
 })

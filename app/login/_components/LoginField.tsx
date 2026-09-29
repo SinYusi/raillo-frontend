@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { login } from "@/lib/api/authentication";
 import { handleError } from "@/lib/utils/errorHandler";
+import { getRedirectPathFromLocation } from "@/lib/utils/safeRedirect";
 import { useAuthStore } from "@/stores/auth-store";
 import { useToast } from "@/hooks/useToast";
 import { LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from "@/constants/storageKeys";
@@ -64,7 +65,8 @@ const LoginField = () => {
       });
       const expiresIn = Date.now() + result.accessTokenExpiresIn * 1000;
       setTokens(result.accessToken, expiresIn);
-      window.location.href = "/";
+      // 로그인이 필요해 넘어온 경우 원래 가려던 화면으로 돌아간다(같은 사이트 경로만)
+      window.location.href = getRedirectPathFromLocation();
     } catch (error: unknown) {
       toast({
         title: "오류",
