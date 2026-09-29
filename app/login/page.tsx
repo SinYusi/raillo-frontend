@@ -8,15 +8,16 @@ import { CardContent } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { getRedirectPathFromLocation } from "@/lib/utils/safeRedirect";
 
 export default function LoginPage() {
   const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
-    // 이미 로그인된 상태면 홈으로 리다이렉트
+    // 이미 로그인된 상태면 가려던 화면(없으면 홈)으로 보낸다
     if (isAuthenticated) {
-      router.push("/");
+      router.push(getRedirectPathFromLocation());
     }
   }, [isAuthenticated, router]);
 
