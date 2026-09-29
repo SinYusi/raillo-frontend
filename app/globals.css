@@ -96,7 +96,7 @@
     --sidebar-border: 228 228 231; /* #e4e4e7 */
     --sidebar-ring: 37 99 235; /* #2563eb */
 
-    /* Footer — 테마와 무관한 고정 다크 밴드 (.dark에서 재정의하지 않음) */
+    /* Footer — 라이트는 고정 다크 밴드. 다크에서는 본문 바탕 + 위 경계선(.dark에서 재정의) */
     --footer: 31 41 55; /* #1f2937 */
     --footer-foreground: 255 255 255; /* #ffffff — 14.68:1 */
     --footer-muted: 209 213 219; /* #d1d5db — 9.96:1 */
@@ -131,6 +131,13 @@
     --border: 39 39 42; /* #27272a */
     --input: 103 103 111; /* #67676f — card 3.30:1 · popover 3.05:1 */
     --ring: 59 130 246; /* #3b82f6 */
+
+    /* Footer — 본문보다 밝게 떠 보이지 않도록 본문 바탕과 같게, 위 경계선으로 구분 */
+    --footer: 9 9 11; /* #09090b = background */
+    --footer-foreground: 250 250 250; /* #fafafa — 19.06:1 */
+    --footer-muted: 161 161 170; /* #a1a1aa — 7.76:1 */
+    --footer-subtle: 161 161 170; /* #a1a1aa — 7.76:1 */
+    --footer-border: 39 39 42; /* #27272a = border */
 
     /* Elevation */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
