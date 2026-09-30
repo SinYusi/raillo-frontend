@@ -158,10 +158,11 @@ function PurchasedTicketsPageContent() {
                                     {ticket.departureStationName}
                                   </div>
                                 </div>
-                                <div className="flex items-center mx-4">
-                                  <div className="w-16 h-0.5 bg-primary-light"></div>
-                                  <ArrowRight className="h-4 w-4 text-muted-foreground mx-1" />
-                                  <div className="w-16 h-0.5 bg-primary-light"></div>
+                                {/* 좁은 화면에서 선이 고정 폭이면 도착 시각이 카드 밖으로 밀려나므로 폭을 줄인다 */}
+                                <div className="flex items-center mx-2 sm:mx-4">
+                                  <div className="w-6 sm:w-16 h-0.5 bg-primary-light"></div>
+                                  <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground mx-1" />
+                                  <div className="w-6 sm:w-16 h-0.5 bg-primary-light"></div>
                                 </div>
                                 <div className="text-center flex-1">
                                   <div className="text-2xl font-bold text-primary">

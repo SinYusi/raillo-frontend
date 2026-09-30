@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 export function TrainListSkeleton() {
   return (
     // 결과 화면과 같이 최소 화면 높이 — 로딩 중에도 푸터가 화면 밖에 있어 결과가 들어와도 밀려나지 않는다
-    <div className="container mx-auto min-h-screen px-4 py-8">
+    <div className="container mx-auto min-h-screen px-4 py-4 md:py-8">
       <div className="max-w-6xl mx-auto space-y-4">
         <Card className="flex items-center justify-center gap-3 p-5 text-sm font-medium text-muted-foreground">
           <LoadingSpinner size="sm" />

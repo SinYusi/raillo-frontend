@@ -252,7 +252,7 @@ function TrainSearchPage() {
 
   return (
     // 로딩 스켈레톤과 같은 최소 높이 — 결과 수(빈 결과 포함)에 따라 푸터 위치가 바뀌지 않게 한다
-    <div className="container mx-auto min-h-screen px-4 py-8">
+    <div className="container mx-auto min-h-screen px-4 py-4 md:py-8">
       <div className="max-w-6xl mx-auto">
         {/* Search Form */}
         <SearchForm
@@ -270,14 +270,11 @@ function TrainSearchPage() {
         />
 
         {/* Train List */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between mb-4">
+        <div className="space-y-3 lg:space-y-4">
+          {/* 할인 안내 전문은 아래 이용 안내 한 곳에만 — 제목 줄은 짧게 둬 모바일에서도 한 줄 */}
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h2 className="text-xl font-bold text-foreground">검색 결과</h2>
-            <div className="text-sm text-muted-foreground">
-              * 요금은 어른 기준이며,
-              어린이(40%)·유아(75%)·경로(30%)·장애인(30~50%)·국가유공자(50%)
-              할인이 적용됩니다.
-            </div>
+            <p className="text-sm text-muted-foreground">요금은 어른 기준 · 할인은 아래 이용 안내 참고</p>
           </div>
 
           <TrainList
